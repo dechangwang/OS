@@ -46,7 +46,7 @@ PUBLIC void keyboard_handler(int irq)
 {
 
 	u8 scan_code = in_byte(KB_DATA);
-//SUM ++;
+
 	if (kb_in.count < KB_IN_BYTES) {
 		*(kb_in.p_head) = scan_code;
 		kb_in.p_head++;
@@ -54,7 +54,7 @@ PUBLIC void keyboard_handler(int irq)
 			kb_in.p_head = kb_in.buf;
 		}
 		kb_in.count++;
-/*disp_str(kb_in.count);*/
+
 	}
 }
 
@@ -64,7 +64,7 @@ PUBLIC void keyboard_handler(int irq)
 *======================================================================*/
 PUBLIC void init_keyboard()
 {
-/*disp_str("inti-keyboard is called");*/
+
 	kb_in.count = 0;
 	kb_in.p_head = kb_in.p_tail = kb_in.buf;
 
