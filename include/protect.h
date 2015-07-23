@@ -32,6 +32,8 @@ typedef struct s_gate
 	u16	offset_high;	/* Offset High */
 }GATE;
 
+
+
 typedef struct s_tss {
 	u32	backlink;
 	u32	esp0;		/* stack pointer to use during interrupt */

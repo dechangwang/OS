@@ -24,9 +24,9 @@ PRIVATE void tty_do_read(TTY* p_tty);
 PRIVATE void tty_do_write(TTY* p_tty);
 PRIVATE void put_key(TTY* p_tty, u32 key);
 PRIVATE int num = 0;
-PUBLIC  char INPUT[0xE];
+PUBLIC  char INPUT[0xE];//原先是想用数组 最初为 PUBLIC  char INPUT[10]
 PUBLIC char INPUT_a='0',INPUT_b='0',INPUT_c='0',INPUT_d='0',INPUT_e='0',INPUT_f='0',
-INPUT_g='0',INPUT_h='0',INPUT_i='0';
+INPUT_g='0',INPUT_h='0',INPUT_i='0';//全局变量用来存输入的值 由于不能用使用数组
 PUBLIC extern int SUM =0 ;
 
 /*======================================================================*

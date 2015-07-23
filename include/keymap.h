@@ -15,7 +15,7 @@
 
 
 /* Keymap for US MF-2 keyboard. */
-
+//这个数组中定义为u32 （unsigned int） 此数组就是用来匹配键盘的  相当于一种用key 找value
 u32 keymap[NR_SCAN_CODES * MAP_COLS] = {
 
 /* scan-code			!Shift		Shift		E0 XX	*/
