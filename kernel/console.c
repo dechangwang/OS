@@ -90,6 +90,35 @@ PUBLIC void out_char(CONSOLE* p_con, char ch)
 			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
 		}
 		break;
+        case 'a':
+		if (p_con->cursor > p_con->original_addr) {
+			p_con->cursor--;
+			
+			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
+		}
+		break;
+ 	case 'd':
+		if (p_con->cursor > p_con->original_addr) {
+			p_con->cursor++;
+			
+			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
+		}
+		break;
+ 	case 's':
+		if (p_con->cursor < p_con->original_addr +
+		    p_con->v_mem_limit - SCREEN_WIDTH) {
+			p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
+				((p_con->cursor) /
+				 SCREEN_WIDTH + 1);
+		}
+		break;
+	case 'w':
+		if (p_con->cursor > p_con->original_addr ) {
+			p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
+				((p_con->cursor) /
+				 SCREEN_WIDTH - 1);
+		}
+		break;
 	default:
 		if (p_con->cursor <
 		    p_con->original_addr + p_con->v_mem_limit - 1) {
