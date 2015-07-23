@@ -26,7 +26,7 @@ PRIVATE void put_key(TTY* p_tty, u32 key);
 PRIVATE int num = 0;
 PUBLIC  char INPUT[0xE];//原先是想用数组 最初为 PUBLIC  char INPUT[10]
 PUBLIC char INPUT_a='0',INPUT_b='0',INPUT_c='0',INPUT_d='0',INPUT_e='0',INPUT_f='0',
-INPUT_g='0',INPUT_h='0',INPUT_i='0';//全局变量用来存输入的值 由于不能用使用数组
+INPUT_g='0',INPUT_h='0',INPUT_i='0';//全局变量用来存输入的值 
 PUBLIC extern int SUM =0 ;
 
 /*======================================================================*
@@ -160,11 +160,7 @@ int num = 0;
 			p_tty->p_inbuf_tail = p_tty->in_buf;
 		}
 		p_tty->inbuf_count--;
-//num ++;
-//num = p_tty->inbuf_count ;
-//if(num%5 ==1)out_char(p_tty->p_console, num);
-//disp_int(num);disp_color_str(ch,0x74);
-//SUM = SUM - 0x13EB1446;
+
 if(SUM % 3 == 0)out_char(p_tty->p_console, '\n');
 /*disp_int(SUM % 5);*/
 /*以下是将输入的数据保存*/
