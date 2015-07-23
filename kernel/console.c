@@ -7,8 +7,7 @@
 
 /*
 	回车键: 把光标移到第一列
-	换行键: 把光标前进到下一行 
-	w a  s d 对应光标的上下左右
+	换行键: 把光标前进到下一行
 */
 
 
@@ -93,31 +92,65 @@ PUBLIC void out_char(CONSOLE* p_con, char ch)
 		break;
         case 'a':
 		if (p_con->cursor > p_con->original_addr) {
-			p_con->cursor--;
+if(((p_con->cursor)/SCREEN_WIDTH) < 24 && ((p_con->cursor)/SCREEN_WIDTH) >= 18 && ((p_con->cursor)%SCREEN_WIDTH) != 4 )
+	{
+p_con->cursor--;
+	
+	}
+else if(((p_con->cursor)/SCREEN_WIDTH) ==21 && ((p_con->cursor)%SCREEN_WIDTH) <=4 &&  ((p_con->cursor)%SCREEN_WIDTH) > 2 ){p_con->cursor--;}			
+
+
 			
-			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
+			/*(p_vmem-1) = DEFAULT_CHAR_COLOR;*/
 		}
 		break;
  	case 'd':
-		if (p_con->cursor > p_con->original_addr) {
-			p_con->cursor++;
+		if (p_con->cursor > p_con->original_addr &&
+		p_con->cursor < ((p_con->cursor)/SCREEN_WIDTH)*SCREEN_WIDTH+12) {
 			
-			*(p_vmem-1) = DEFAULT_CHAR_COLOR;
+		if(((p_con->cursor)/SCREEN_WIDTH) == 18 || ((p_con->cursor)/SCREEN_WIDTH) == 23){p_con->cursor++;}
+ else if(((p_con->cursor)/SCREEN_WIDTH) == 21 && ((p_con->cursor)%SCREEN_WIDTH)<4)
+		{p_con->cursor++;}
+			
+			
+			/*(p_vmem-1) = DEFAULT_CHAR_COLOR;*/
 		}
 		break;
  	case 's':
 		if (p_con->cursor < p_con->original_addr +
 		    p_con->v_mem_limit - SCREEN_WIDTH) {
-			p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
+			if(((p_con->cursor)/SCREEN_WIDTH) < 23 && ((p_con->cursor)/SCREEN_WIDTH) != 23 && ((p_con->cursor)/SCREEN_WIDTH) != 18 )
+			  if(((p_con->cursor)/SCREEN_WIDTH) == 21 )
+			    {if(((p_con->cursor) % SCREEN_WIDTH) > 3)
+				p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
 				((p_con->cursor) /
-				 SCREEN_WIDTH + 1);
+				 SCREEN_WIDTH + 1) + 
+				(p_con->cursor % SCREEN_WIDTH);
+
+				
+			  }else{
+				p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
+				((p_con->cursor) /
+				 SCREEN_WIDTH + 1) + 
+				(p_con->cursor % SCREEN_WIDTH);
+
+				}
+					
 		}
 		break;
 	case 'w':
-		if (p_con->cursor > p_con->original_addr ) {
+		if (p_con->cursor >( p_con->original_addr + SCREEN_WIDTH *19) ) {
+			  if(((p_con->cursor)/SCREEN_WIDTH) == 21 || ((p_con->cursor)/SCREEN_WIDTH) == 24)
+			    if(((p_con->cursor) % SCREEN_WIDTH) > 3 && ((p_con->cursor) % SCREEN_WIDTH) < 5 )
 			p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
 				((p_con->cursor) /
-				 SCREEN_WIDTH - 1);
+				 SCREEN_WIDTH - 1)+
+				(p_con->cursor % SCREEN_WIDTH);
+				
+				p_con->cursor = p_con->original_addr + SCREEN_WIDTH * 
+				((p_con->cursor) /
+				 SCREEN_WIDTH - 1)+
+				(p_con->cursor % SCREEN_WIDTH);
 		}
 		break;
 	default:
