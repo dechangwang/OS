@@ -64,4 +64,16 @@
 /* system call */
 #define NR_SYS_CALL     1
 
+/* snake map */
+#define MAP_LENGTH 80
+#define MAP_HEIGHT 25
+#define MAP_SIZE MAP_HEIGHT*MAP_LENGTH
+
+/* snake direction */
+#define DIRECT_UP 1
+#define DIRECT_DOWN 2
+#define DIRECT_LEFT 3
+#define DIRECT_RIGHT 4
+#define DIRECT_NULL 0
+
 #endif /* _ORANGES_CONST_H_ */

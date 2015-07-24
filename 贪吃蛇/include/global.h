@@ -29,3 +29,11 @@ extern	char		task_stack[];
 extern  TASK            task_table[];
 extern	irq_handler	irq_table[];
 
+extern char			snake_map[];
+extern int			snake_path[];
+extern int			snake_direct;
+extern int			snake_length;
+extern int			snake_head, snake_tail;
+
+extern int			snake_killer1, snake_killer2;
+extern int			x, y, dx, dy, nx, ny, ax, ay;

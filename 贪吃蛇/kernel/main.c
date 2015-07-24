@@ -62,8 +62,8 @@ PUBLIC int kernel_main()
 	}
 
 	proc_table[0].ticks = proc_table[0].priority = 15;
-	proc_table[1].ticks = proc_table[1].priority =  5;
-	proc_table[2].ticks = proc_table[2].priority =  3;
+	//proc_table[1].ticks = proc_table[1].priority = 10;
+	//proc_table[2].ticks = proc_table[2].priority =  3;
 
 	k_reenter = 0;
 	ticks = 0;
@@ -71,7 +71,7 @@ PUBLIC int kernel_main()
 	p_proc_ready	= proc_table;
 
 	init_clock();
-        init_keyboard();
+    init_keyboard();
 
 	restart();
 
@@ -79,37 +79,257 @@ PUBLIC int kernel_main()
 }
 
 /*======================================================================*
-                               TestA
+                               Start
  *======================================================================*/
-void TestA()
+void Start()
 {
-	int i = 0;
-	while (1) {
-		/* disp_str("A."); */
-		milli_delay(10);
+	/*int ai;
+
+	disp_pos = 0;
+
+	for (ai = 0; ai < 80 * 25; ai++)
+	{
+		disp_str(" ");
+	}
+
+	disp_pos = 0;*/
+
+	//memset(snake_map, 0, sizeof(char)*MAP_SIZE);
+
+	/*int ai;
+
+	for (ai = 0; ai < 80 * 25; ai++)
+	{
+		snake_map[ai] = ' ';
+	}*/
+
+	Reset();
+
+	while (1){
+		//proc_table[0].ticks = proc_table[0].priority = 150;
+		milli_delay(3333);
+
+		int hX, hY;
+		int newHead;
+
+		if (snake_direct == DIRECT_NULL) continue;
+
+		hX = snake_path[snake_head] % MAP_LENGTH;
+		hY = snake_path[snake_head] / MAP_LENGTH;
+		switch (snake_direct)
+		{
+		case DIRECT_UP:
+		{
+			hY--;
+			break;
+		}
+		case DIRECT_DOWN:{
+			hY++;
+			break;
+		}
+		case DIRECT_LEFT:{
+			hX--;
+			break;
+		}
+		case DIRECT_RIGHT:{
+			hX++;
+			break;
+		}
+		default:
+			break;
+		}
+		
+		newHead = hY*MAP_LENGTH + hX;
+
+		if (newHead < 0 || newHead >= MAP_SIZE || hY >= MAP_HEIGHT || hY < 0 || hX < 0 || hX >= MAP_LENGTH){
+			Lose();
+			continue;
+		}
+
+		if (snake_map[newHead] == 'O' && newHead != snake_path[snake_tail]){
+			Lose();
+			continue;
+		}
+
+		if (snake_map[newHead] != '*'){
+			disp_pos = snake_path[snake_tail] * 2;
+			disp_str(" ");
+			snake_map[snake_path[snake_tail]] = ' ';
+
+			snake_tail++;
+			if (snake_tail == MAP_SIZE) snake_tail = 0;
+		}
+		else{
+			snake_length++;
+		}
+
+		disp_pos = snake_path[snake_head] * 2;
+		disp_str("0");
+		snake_map[snake_path[snake_head]] = 'O';
+		
+		snake_head++;
+		if (snake_head == MAP_SIZE) snake_head = 0;
+		snake_path[snake_head] = newHead;
+		
+		disp_pos = snake_path[snake_head] * 2;
+		disp_str("@");
+		snake_map[snake_path[snake_head]] = '@';
+
+		if (snake_length == 6) {
+			Win();
+			continue;
+		}
 	}
 }
 
-/*======================================================================*
-                               TestB
- *======================================================================*/
-void TestB()
-{
-	int i = 0x1000;
-	while(1){
-		/* disp_str("B."); */
-		milli_delay(10);
+void Reset(){
+	int bi;
+
+	for (bi = 0; bi < MAP_SIZE; bi++)
+	{
+		snake_map[bi] = ' ';
+		if (bi % (MAP_LENGTH / 2) == 20){
+			if (bi / MAP_LENGTH == 2 || bi / MAP_LENGTH == 24){
+				snake_map[bi] = '*';
+ii33333333			}
+		}
 	}
+
+	7
+
+	disp_pos = 0;
+	disp_str(snake_map);
+
+	snake_length = 2;
+	snake_head = 1;
+	snake_tail = 0;
+	snake_path[snake_head] = 1;
+	snake_path[snake_tail] = 0;
+	snake_direct = DIRECT_RIGHT;
+
+	disp_pos = snake_path[snake_tail] * 2;
+	disp_str("O");
+	disp_pos = snake_path[snake_head] * 2;
+	disp_str("@");
+	
+	/*snake_killer1 = MAP_SIZE - 1;
+	snake_killer2 = MAP_SIZE - 1;
+
+	disp_pos = snake_killer1 * 2;
+	disp_str("#");
+	snake_map[snake_killer1] = '#';
+	disp_pos = snake_killer2 * 2;
+	disp_str("#");
+	snake_map[snake_killer2] = '#';*/
 }
 
-/*======================================================================*
-                               TestB
- *======================================================================*/
-void TestC()
-{
-	int i = 0x2000;
-	while(1){
-		/* disp_str("C."); */
-		milli_delay(10);
-	}
+void Lose(){
+	disp_pos = (MAP_SIZE / 2 - 5) * 2;
+	disp_str("You Lose");
+
+	snake_direct = DIRECT_NULL;
 }
+
+void Win(){
+	disp_pos = (MAP_SIZE / 2 - 5) * 2;
+	disp_str("You Win");
+
+	snake_direct = DIRECT_NULL;
+}
+
+/*
+void SnakeKiller(){
+	while (1){
+		milli_delay(2000);
+
+		if (snake_direct == DIRECT_NULL) continue;
+
+		//int x, y, dx, dy, nx, ny, ax, ay;
+		
+		x = snake_killer1 % MAP_LENGTH;
+		y = snake_killer1 / MAP_HEIGHT;
+
+		ax = snake_path[snake_head] % MAP_LENGTH;
+		ay = snake_path[snake_head] / MAP_HEIGHT;
+
+		dx = (x > ax ? x - ax: ax - x);
+		dy = (y > ay ? y - ay: ay - y);
+
+		nx = x;
+		ny = y;
+
+		if (dx > dy){
+			if (x < ax){
+				nx++;
+			}
+			else{
+				nx--;
+			}
+		}
+		else{
+			if (y < ay){
+				ny++;
+			}
+			else{
+				ny--;
+			}
+		}
+
+		disp_pos = snake_killer1 * 2;
+		disp_str(" ");
+		snake_map[snake_killer1] = ' ';
+
+		snake_killer1 = nx + ny*MAP_LENGTH;
+		disp_pos = snake_killer1 * 2;
+		disp_str("#");
+
+		x = snake_killer2 % MAP_LENGTH;
+		y = snake_killer2 / MAP_HEIGHT;
+
+		ax = snake_path[snake_tail] % MAP_LENGTH;
+		ay = snake_path[snake_tail] / MAP_HEIGHT;
+
+		dx = (x > ax ? x - ax: ax - x);
+		dy = (y > ay ? y - ay: ay - y);
+
+		nx = x;
+		ny = y;
+
+		if (dx >= dy){
+			if (x < ax){
+				nx++;
+			}
+			else{
+				nx--;
+			}
+		}
+		else{
+			if (y < ay){
+				ny++;
+			}
+			else{
+				ny--;
+			}
+		}
+		disp_pos = 0;
+		disp_int(nx);
+		disp_pos = 80;
+		disp_int(ny);
+
+		disp_pos = snake_killer2 * 2;
+		disp_str(" ");
+		snake_map[snake_killer2] = ' ';
+
+		snake_killer2 = nx + ny*MAP_LENGTH;
+		disp_pos = snake_killer2 * 2;
+		disp_str("#");
+
+		if (snake_map[snake_killer1] == '@' || snake_map[snake_killer1] == 'O'
+			|| snake_map[snake_killer2] == '@' || snake_map[snake_killer2] == 'O'){
+			Lose();
+		}
+
+		snake_map[snake_killer1] = '#';
+		snake_map[snake_killer2] = '#';
+	}
+}*/
