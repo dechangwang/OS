@@ -191,11 +191,9 @@ void Reset(){
 		if (bi % (MAP_LENGTH / 2) == 20){
 			if (bi / MAP_LENGTH == 2 || bi / MAP_LENGTH == 24){
 				snake_map[bi] = '*';
-ii33333333			}
+			}
 		}
 	}
-
-	7
 
 	disp_pos = 0;
 	disp_str(snake_map);
